@@ -72,7 +72,7 @@ import { BitqueryServer } from '@bitquery/tradingview-sdk/server';
 
 const server = new BitqueryServer({
   port: process.env.WS_PORT || 8081,
-  apiKey: process.env.BITQUERY_API_KEY // required
+  apiKey: process.env.BITQUERY_API_KEY // required token, generate here https://account.bitquery.io/user/api_v2/access_tokens
 });
 
 server.init();
