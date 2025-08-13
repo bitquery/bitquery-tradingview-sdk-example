@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bitquery TradingView SDK Demo</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="brand"><img src="/bitqueryLogo.png" alt="Bitquery" class="logo" />Bitquery TV SDK</div>
+      <nav class="nav">
+        <a href="/" class="active">Home</a>
+        <a href="/currency.html">Currency</a>
+        <a href="/token.html">Token</a>
+        <a href="/pair.html">Pair</a>
+      </nav>
+    </header>
+    <main class="container">
+      <h1>Bitquery TradingView SDK Demo</h1>
+      <section class="card">
+        <h2>Requirements</h2>
+        <ul>
+          <li>Bitquery API key (required) — get it at <a href="https://ide.bitquery.io/" target="_blank" rel="noreferrer">Bitquery GraphQL IDE</a></li>
+          <li>Access to TradingView Charting Library and local hosting of its assets</li>
+          <li>Node.js 18+</li>
+        </ul>
+      </section>
+      <section class="card">
+        <h2>Quick start</h2>
+        <ol>
+          <li>Put TradingView Charting Library in <code>/public/static/charting_library</code></li>
+          <li>Create <code>.env.local</code> with:
+            <pre style="margin-top:8px">BITQUERY_API_KEY=YOUR_KEY
+WS_PORT=8081
+NEXT_PUBLIC_WS_URL=ws://localhost:8081</pre>
+          </li>
+          <li>Run <code>npm run dev</code> and open <code>http://localhost:3000</code></li>
+        </ol>
+      </section>
+      <section class="card">
+        <h2>Widget options</h2>
+        <ul>
+          <li><code>container</code>, <code>serverUrl</code>, <code>tradingViewPath</code>, <code>theme</code></li>
+          <li>Modes by params: Currency, Token, Pair (<code>base</code>, <code>quote</code>, <code>market</code>)</li>
+        </ul>
+      </section>
+      <section class="card">
+        <h2>Data modes</h2>
+        <ul>
+          <li><b>Currency</b>: <code>base</code>=currencyID, <code>quote</code>='usd' (fixed), <code>market</code>=''</li>
+          <li><b>Token</b>: <code>base</code>=tokenID, <code>quote</code>='usd' (fixed), <code>market</code>='all' (for now; later pick a specific network/market)</li>
+          <li><b>Pair</b>: <code>base</code>=tokenID, <code>quote</code>=quoteTokenID, <code>market</code>=marketID (DEX pool/market)</li>
+          <li><b>No parameters</b>: widget auto-selects a top currency for the last 24h</li>
+        </ul>
+      </section>
+      <section class="card">
+        <h2>Minimal usage</h2>
+        <pre>&lt;script type="module"&gt;
+import { BitqueryWidget } from '/vendor/@bitquery/tradingview-sdk/dist/client.js';
+const widget = new BitqueryWidget({
+  base: 'bid:bitcoin',
+  quote: 'usd',
+  market: '',
+  container: document.getElementById('chart'),
+  serverUrl: 'ws://localhost:8081',
+  tradingViewPath: '/static/charting_library/',
+  theme: 'dark',
+});
+widget.init();
+&lt;/script&gt;</pre>
+      </section>
+      <section class="card">
+        <h2>Server (WebSocket)</h2>
+        <p>This demo starts SDK WebSocket in <code>server.mjs</code> (default <code>ws://localhost:8081</code>). Ensure your client <code>serverUrl</code> matches.</p>
+        <pre>import { BitqueryServer } from '@bitquery/tradingview-sdk/server';
+
+const server = new BitqueryServer({
+  port: process.env.WS_PORT || 8081,
+  apiKey: process.env.BITQUERY_API_KEY,
+});
+server.init();</pre>
+      </section>
+      <section class="card">
+        <h2>Docs</h2>
+        <ul>
+          <li>SDK: <a href="https://www.npmjs.com/package/@bitquery/tradingview-sdk" target="_blank" rel="noreferrer">@bitquery/tradingview-sdk</a></li>
+          <li>TradingView CL: <a href="https://www.tradingview.com/charting-library-docs/" target="_blank" rel="noreferrer">Charting Library Docs</a></li>
+          <li>Bitquery Trading APIs: <a href="https://docs.bitquery.io/docs/category/trading-apis/" target="_blank" rel="noreferrer">docs.bitquery.io</a></li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>Live demo (Top currency)</h2>
+        <div id="home-chart" class="chart"></div>
+        <p style="margin-top:10px;color:var(--muted)">Mode: Top currency (no parameters). The widget auto-selects a top currency for the last 24h.</p>
+        <div class="card" style="margin-top:10px">
+          <div style="font-weight:600;margin-bottom:6px">Example</div>
+          <pre>&lt;script type="module"&gt;
+import { BitqueryWidget } from '@bitquery/tradingview-sdk/dist/client.js';
+const widget = new BitqueryWidget({
+  container: document.getElementById('home-chart'),
+  serverUrl: 'ws://localhost:8081',
+  tradingViewPath: '/static/charting_library/',
+  theme: 'dark',
+});
+widget.init();
+&lt;/script&gt;</pre>
+        </div>
+      </section>
+    </main>
+    <script type="module">
+         import { BitqueryWidget } from '/vendor/@bitquery/tradingview-sdk/dist/client.js';
+
+      window.addEventListener('DOMContentLoaded', () => {
+        const el = document.getElementById('home-chart');
+        if (!el) return;
+        const widget = new BitqueryWidget({
+          // no base/quote/market -> SDK will show top currency automatically
+          container: el,
+          serverUrl: (window.NEXT_PUBLIC_WS_URL || `ws://${location.hostname}:8081`),
+          tradingViewPath: '/static/charting_library/',
+          theme: 'dark',
+        });
+        widget.init();
+        window.__homeWidget = widget;
+        window.addEventListener('beforeunload', () => { try { widget.destroy(); } catch(e){} });
+      });
+    </script>
+  </body>
+  </html>
+

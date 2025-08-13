@@ -1,0 +1,16 @@
+{
+  "name": "bitquery-tradingview-sdk-example",
+  "version": "0.1.0",
+  "description": "Demo site to showcase and test @bitquery/tradingview-sdk with TradingView Charting Library.",
+  "private": true,
+  "scripts": {
+    "dev": "node server.mjs",
+    "start": "NODE_ENV=production node server.mjs"
+  },
+  "dependencies": {
+    "@bitquery/tradingview-sdk": "^1.0.2",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "ws": "^8.18.3"
+  }
+}

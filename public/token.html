@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Token | Bitquery TV SDK</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <script type="module">
+          import { BitqueryWidget } from '/vendor/@bitquery/tradingview-sdk/dist/client.js';
+
+      window.addEventListener('DOMContentLoaded', () => {
+        const el = document.getElementById('chart');
+        const widget = new BitqueryWidget({
+          base: 'bid:solana:So11111111111111111111111111111111111111112',
+          quote: 'usd',
+          market: 'all',
+          container: el,
+          serverUrl: (window.NEXT_PUBLIC_WS_URL || `ws://${location.hostname}:8081`),
+          tradingViewPath: '/static/charting_library/',
+          theme: 'dark',
+        });
+        widget.init();
+        window.__widget = widget;
+        window.addEventListener('beforeunload', () => { try { widget.destroy(); } catch(e){} });
+      });
+    </script>
+  </head>
+  <body>
+    <header class="header">
+      <div class="brand"><img src="/bitqueryLogo.png" alt="Bitquery" class="logo" />Bitquery TV SDK</div>
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a href="/currency.html">Currency</a>
+        <a href="/token.html" class="active">Token</a>
+        <a href="/pair.html">Pair</a>
+      </nav>
+    </header>
+    <main class="container">
+      <h1>Token</h1>
+      <div id="chart" class="card chart"></div>
+      <p style="margin-top:10px;color:var(--muted)">Mode: Token. base=tokenID, quote='usd' (fixed), market='all' (for now; later a specific network/market).</p>
+      <div class="card" style="margin-top:10px">
+        <div style="font-weight:600;margin-bottom:6px">Example</div>
+        <pre>&lt;script type="module"&gt;
+import { BitqueryWidget } from '/vendor/@bitquery/tradingview-sdk/dist/client.js';
+const widget = new BitqueryWidget({
+  base: 'bid:solana:So11111111111111111111111111111111111111112',
+  quote: 'usd',
+  market: 'all',
+  container: document.getElementById('chart'),
+  serverUrl: 'ws://localhost:8081',
+  tradingViewPath: '/static/charting_library/',
+  theme: 'dark',
+});
+widget.init();
+&lt;/script&gt;</pre>
+      </div>
+    </main>
+  </body>
+  </html>
+
