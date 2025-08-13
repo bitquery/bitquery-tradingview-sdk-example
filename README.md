@@ -4,11 +4,11 @@ Simple demo that hosts TradingView Charting Library and uses `@bitquery/tradingv
 
 Links
 - SDK on npm: https://www.npmjs.com/package/@bitquery/tradingview-sdk
-- Get Bitquery API key: https://ide.bitquery.io/
+- Get Bitquery Authorization Token key: https://account.bitquery.io/user/api_v2/access_tokens
 - TradingView Charting Library: https://www.tradingview.com/charting-library-docs/
 
 Requirements
-- Bitquery API key (required) — without it data will not load
+- Bitquery OAuth Token (required) — without it data will not load
 - Access to the TradingView Charting Library
 - Node.js 18+
 
