@@ -34,7 +34,7 @@
         <ol>
           <li>Put TradingView Charting Library in <code>/public/static/charting_library</code></li>
           <li>Create <code>.env.local</code> with:
-            <pre style="margin-top:8px">BITQUERY_API_KEY=YOUR_KEY
+            <pre style="margin-top:8px">BITQUERY_OAUTH_TOKEN=YOUR_OAUTH_TOKEN
 WS_PORT=8081
 NEXT_PUBLIC_WS_URL=ws://localhost:8081</pre>
           </li>
@@ -80,7 +80,7 @@ widget.init();
 
 const server = new BitqueryServer({
   port: process.env.WS_PORT || 8081,
-  apiKey: process.env.BITQUERY_API_KEY,
+          apiKey: process.env.BITQUERY_OAUTH_TOKEN,
 });
 server.init();</pre>
       </section>

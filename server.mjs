@@ -4,6 +4,9 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { BitqueryServer } from '@bitquery/tradingview-sdk/server';
+import WebSocket from 'ws';
+
+global.WebSocket = WebSocket;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -17,7 +20,7 @@ const WS_PORT = process.env.WS_PORT ? Number(process.env.WS_PORT) : 8081;
 // Start Bitquery WebSocket server
 const bitqueryServer = new BitqueryServer({
   port: WS_PORT,
-  apiKey: process.env.BITQUERY_API_KEY || '',
+  apiKey: process.env.BITQUERY_OAUTH_TOKEN ,
 });
 bitqueryServer.init();
 

@@ -8,7 +8,7 @@
     "start": "NODE_ENV=production node server.mjs"
   },
   "dependencies": {
-    "@bitquery/tradingview-sdk": "^1.0.2",
+    "@bitquery/tradingview-sdk": "^1.0.3",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "ws": "^8.18.3"
