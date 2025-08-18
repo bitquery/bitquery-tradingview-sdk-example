@@ -20,6 +20,7 @@ const WS_PORT = process.env.WS_PORT ? Number(process.env.WS_PORT) : 8081;
 // Start Bitquery WebSocket server
 const bitqueryServer = new BitqueryServer({
   port: WS_PORT,
+  bitqueryEndpoint:'https://streaming.bitquery.io/eap',
   apiKey: process.env.BITQUERY_OAUTH_TOKEN ,
 });
 bitqueryServer.init();

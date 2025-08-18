@@ -72,7 +72,9 @@ import { BitqueryServer } from '@bitquery/tradingview-sdk/server';
 
 const server = new BitqueryServer({
   port: process.env.WS_PORT || 8081,
-  apiKey: process.env.BITQUERY_OAUTH_TOKEN // https://account.bitquery.io/user/api_v2/access_tokens
+  apiKey: process.env.BITQUERY_OAUTH_TOKEN, // https://account.bitquery.io/user/api_v2/access_tokens
+  bitqueryEndpoint:'https://streaming.bitquery.io/eap';
+
 });
 
 server.init();
