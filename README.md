@@ -119,5 +119,74 @@ Troubleshooting
 - WebSocket errors: verify the WS server is running (port 8081 by default) and `BITQUERY_OAUTH_TOKEN` is valid
 - Pair mode shows wrong entity: ensure `market` is a real DEX pool/market ID, not a program address
 
+### Server-side configuration
+
+Pass `widgetOptions` to the WebSocket server. These options will be sent to clients and applied to the TradingView widget.
+
+```js
+import { BitqueryServer } from '@bitquery/tradingview-sdk/server';
+
+const server = new BitqueryServer({
+  port: 8080,
+  apiKey: process.env.BITQUERY_OAUTH_TOKEN,
+  widgetOptions: {
+    locale: 'ru',
+    time_scale: { min_bar_spacing: 2 },
+    overrides: {
+      "paneProperties.background": "#fff1e6"
+    },
+    studies_overrides: {
+      "volume.volume.color.0": "#ef5350",
+      "volume.volume.color.1": "#26a69a",
+      "volume.volume.transparency": 70
+    }
+  }
+});
+
+server.init();
+```
+
+### Client-side overrides
+
+Optionally, pass `widgetOptions` to the browser widget. Client options override server options.
+
+```js
+import { BitqueryWidget } from '@bitquery/tradingview-sdk';
+
+const widget = new BitqueryWidget({
+  container: document.getElementById('chart-container'),
+  serverUrl: 'ws://localhost:8080',
+  tradingViewPath: '/static/charting_library/',
+  theme: 'dark',
+  widgetOptions: {
+    // Any TradingView widget options are allowed here
+    locale: 'ru',
+    overrides: { "paneProperties.background": "#e8f5ff" },
+    time_scale: { min_bar_spacing: 2 },
+    studies_overrides: {
+      "volume.volume.color.0": "#ef5350",
+      "volume.volume.color.1": "#26a69a",
+      "volume.volume.transparency": 60
+    }
+  }
+});
+
+await widget.init();
+```
+
+Commonly used keys:
+
+- `locale`: UI language (requires localization files in your Charting Library assets).
+- `overrides`: style overrides (e.g., `paneProperties.background`, legend, grid).
+- `studies_overrides`: study colors and transparency (e.g., volume colors).
+- `time_scale`: chart time scale settings (e.g., `min_bar_spacing`).
+- `enabled_features` / `disabled_features`: toggle Charting Library features (arrays replace previous values).
+
+Precedence: defaults < server `widgetOptions` < client `widgetOptions`.
+
+To verify final options in the browser console, set `__debug: true`. The client will print:
+
+`TradingViewWidget: merged widget options → { ... }`.
+
 Notes
 - `.gitignore` already excludes `public/static/charting_library/` and `public/static/datafeeds/` from version control
